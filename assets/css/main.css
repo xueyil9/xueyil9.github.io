@@ -118,12 +118,21 @@ input, select, textarea {
 		}
 
 /* Type */
-
+.major h2 {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #2a2a2a;
+}
 	body {
 		background-color: #935d8c;
 		color: rgba(255, 255, 255, 0.65);
 	}
-
+#main p {
+    font-size: 1.2em;
+    line-height: 1.8;
+	font-weight: 150;
+    color: #333333;
+}
 	body, input, select, textarea {
 		font-family: "Source Sans Pro", Helvetica, sans-serif;
 		font-size: 17pt;
