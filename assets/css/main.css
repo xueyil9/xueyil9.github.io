@@ -60,9 +60,17 @@ mark {
 	color: inherit;
 }
 
+
 input::-moz-focus-inner {
 	border: 0;
 	padding: 0;
+}
+.profile-photo {
+    border-radius: 50%;
+    width: 16em;
+    height: 16em;
+    object-fit: cover;
+    object-position: 40% 20%;
 }
 
 input, select, textarea {
