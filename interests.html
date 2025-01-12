@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>My Interests - Xueyi Li</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			.gallery {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+				gap: 2em;
+				padding: 2em 0;
+			}
+			.gallery-item {
+				text-align: center;
+			}
+			.gallery-item img {
+				width: 100%;
+				border-radius: 8px;
+				margin-bottom: 1em;
+			}
+			.gallery-caption {
+				font-size: 0.9em;
+				color: #666;
+				margin-top: 0.5em;
+			}
+		</style>
+	</head>
+	<body class="is-preload">
+		<div id="wrapper">
+			<header id="header">
+				<h1>My Artistic Journey</h1>
+				<p>A showcase of my passions in music, art, and performance</p>
+			</header>
+
+			<div id="main">
+								<!-- Painting/Calligraphy Section -->
+				<section class="main">
+					<header class="major">
+						<h2>Painting & Calligraphy 书画</h2>
+						<p>Traditional Chinese arts in modern expression</p>
+					</header>
+					<div class="gallery">
+						<div class="gallery-item">
+							<img src="images/guohua.jpg" alt="Artwork">
+							<div class="gallery-caption">Summer Landscape, Ink on Rice Paper</div>
+						</div>
+						<div class="gallery-item">
+							<img src="images/pic12.jpg" alt="Artwork">
+							<div class="gallery-caption">Summer Landscape, Ink on Rice Paper</div>
+						</div>
+						<div class="gallery-item">
+							<img src="images/pic13.jpg" alt="Artwork">
+							<div class="gallery-caption">Summer Landscape, Ink on Rice Paper</div>
+						</div>
+						<div class="gallery-item">
+							<img src="images/Alan.jpg" alt="Artwork">
+							<div class="gallery-caption">Summer Landscape, Ink on Rice Paper</div>
+						</div>
+						<div class="gallery-item">
+							<img src="images/yibu.jpg" alt="Artwork">
+							<div class="gallery-caption">Summer Landscape, Ink on Rice Paper</div>
+						</div>
+						<div class="gallery-item">
+							<img src="images/sumiao.jpeg" alt="Artwork">
+							<div class="gallery-caption">Summer Landscape, Ink on Rice Paper</div>
+						</div><<<!-- Add more gallery items -->
+					</div>
+				</section>
+
+				<!-- Pipa Section -->
+				<section class="main">
+					<header class="major">
+						<h2>Pipa 琵琶</h2>
+						<p>My journey with the traditional Chinese lute</p>
+					</header>
+
+					<div class="video-wrapper" style="text-align: center;">
+						<button id="playButton" class="button primary" style="margin-bottom: 20px;">
+							🔥Unlock to Watch My Performance for JUST $5!
+						</button>
+
+						<video id="pipaVideo" style="max-width: 300px; width: 60%; display: none; margin: 0 auto;" controls>
+							<source src="videos/rose.mov" type="video/mp4">
+						</video>
+
+					</div>
+				</section>
+
+				<script>
+				document.getElementById('playButton').addEventListener('click', function() {
+					const video = document.getElementById('pipaVideo');
+					video.style.display = 'block';
+					this.style.display = 'none';
+					video.play();
+				});
+				</script>
+						</section>
+
+
+				<!-- Cosplay Section -->
+				<section class="main">
+					<header class="major">
+						<h2>Cosplay コスプレ</h2>
+						<p>Bringing characters to life</p>
+					</header>
+					<div class="gallery">
+						<div class="gallery-item">
+							<img src="images/cosplay1.jpg" alt="Cosplay">
+							<div class="gallery-caption">Character: Sakura, Spring Convention 2024</div>
+						</div>
+						<!-- Add more gallery items -->
+					</div>
+				</section>
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">&copy; Xueyi Li. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+			</footer>
+		</div>
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+	</body>
+</html>
