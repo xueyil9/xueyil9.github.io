@@ -73,6 +73,13 @@ input::-moz-focus-inner {
     object-position: 40% 20%;
 }
 
+.features .image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
 input, select, textarea {
 	-moz-appearance: none;
 	-webkit-appearance: none;
