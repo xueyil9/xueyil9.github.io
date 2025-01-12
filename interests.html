@@ -73,30 +73,35 @@
 				<section class="main">
 					<header class="major">
 						<h2>Pipa</h2>
-						<p>My journey with the traditional Chinese lute</p>
+						<p>No more words are needed. This is my favorite song: 'Send Me a 🌹.'</p>
 					</header>
 
 					<div class="video-wrapper" style="text-align: center;">
 						<button id="playButton" class="button primary" style="margin-bottom: 20px;">
-							🔥Unlock to Watch My Performance for JUST $5!
+							Unlock the Performance for JUST $5! 🔥
 						</button>
 
-						<video id="pipaVideo" style="max-width: 300px; width: 60%; display: none; margin: 0 auto;" controls>
-							<source src="videos/rose.mov" type="video/mp4">
-						</video>
-
+						<div id="vimeoVideo" style="max-width: 500px; width: 60%; display: none; margin: 0 auto;">
+							<iframe src="https://player.vimeo.com/video/1046214273"
+									width="100%"
+									height="480"
+									frameborder="0"
+									allow="autoplay; fullscreen; picture-in-picture"
+									allowfullscreen>
+							</iframe>
+						</div>
 					</div>
+
+<script>
+document.getElementById('playButton').addEventListener('click', function() {
+    document.getElementById('vimeoVideo').style.display = 'block';
+    this.style.display = 'none';
+});
+</script>
+
 				</section>
 
-				<script>
-				document.getElementById('playButton').addEventListener('click', function() {
-					const video = document.getElementById('pipaVideo');
-					video.style.display = 'block';
-					this.style.display = 'none';
-					video.play();
-				});
-				</script>
-						</section>
+
 
 
 				<!-- Cosplay Section -->
