@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Leaflet Map - GIS Project</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			#map {
+				height: 600px;
+				width: 100%;
+				border-radius: 10px;
+				box-shadow: 0 0 10px rgba(0,0,0,0.2);
+			}
+		</style>
+	</head>
+	<body class="is-preload">
+		<div id="wrapper">
+			<header id="header">
+				<h1>Leaflet Map</h1>
+				<p>BYU</p>
+			</header>
+
+			<div id="main">
+				<section id="content" class="main">
+					<!-- Map Container -->
+					<div id="map"></div>
+
+					<!-- Navigation Button -->
+					<section class="main special" style="margin-top: 2em;">
+						<ul class="actions special">
+							<li><a href="ce514.html" class="button large">Back to CE514</a></li>
+						</ul>
+					</section>
+
+				</section>
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">&copy; Xueyi Li. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+			</footer>
+		</div>
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+		<script>
+			// Initialize the map
+			var map = L.map('map').setView([40.2338, -111.6585], 13); // Centered on BYU
+
+			// Add OpenStreetMap tile layer
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				maxZoom: 19,
+				attribution: '© OpenStreetMap contributors'
+			}).addTo(map);
+
+			// Add a marker for BYU
+			L.marker([40.2338, -111.6585])
+				.bindPopup('Brigham Young University')
+				.addTo(map);
+		</script>
+	</body>
+</html>
