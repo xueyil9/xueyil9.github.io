@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 自定义部分 1: 更改标题 -->
+    <title>Length Unit Converter - Xueyi</title>
+    <style>
+        /* 自定义部分 2: 更改颜色方案和样式 */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f0f0f0; /* 更改背景色 */
+            color: #333; /* 更改文字颜色 */
+        }
+
+        .converter-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* 自定义部分 3: 更改标题样式 */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50; /* 更改颜色 */
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            padding: 8px;
+            width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* 自定义部分 4: 更改按钮样式 */
+        button {
+            background-color: #4CAF50; /* 更改颜色 */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* 自定义部分 5: 添加你的个性化样式 */
+        .personal-touch {
+            text-align: center;
+            margin-top: 20px;
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="converter-container">
+        <!-- 自定义部分 6: 更改标题和介绍文字 -->
+        <div class="header">
+            <h1>Length Unit Converter</h1>
+            <p>Welcome to my unit converter. Yo Yo Check it Now!</p>
+        </div>
+
+        <div class="input-group">
+            <label for="inputValue">Enter Value:</label>
+            <input type="number" id="inputValue" placeholder="Enter a number">
+        </div>
+
+        <div class="input-group">
+            <label for="fromUnit">From Unit:</label>
+            <select id="fromUnit">
+                <option value="inches">Inches</option>
+                <option value="feet">Feet</option>
+                <option value="yards">Yards</option>
+                <option value="miles">Miles</option>
+                <option value="meters">Meters</option>
+                <option value="kilometers">Kilometers</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="toUnit">To Unit:</label>
+            <select id="toUnit">
+                <option value="inches">Inches</option>
+                <option value="feet">Feet</option>
+                <option value="yards">Yards</option>
+                <option value="miles">Miles</option>
+                <option value="meters">Meters</option>
+                <option value="kilometers">Kilometers</option>
+            </select>
+        </div>
+
+        <button onclick="convert()">Convert</button>
+
+        <div id="result"></div>
+
+        <!-- 自定义部分 7: 添加你的个人标识 -->
+        <div class="personal-touch">
+            <p>Created by Xueyi Li - XOXO</p>
+            <!-- 可以在这里添加你的logo或其他个人标识 -->
+        </div>
+    </div>
+
+    <script>
+        // 转换单位到米的系数
+        const toMeters = {
+            inches: 0.0254,
+            feet: 0.3048,
+            yards: 0.9144,
+            miles: 1609.344,
+            meters: 1,
+            kilometers: 1000
+        };
+
+        function convert() {
+            const inputValue = parseFloat(document.getElementById('inputValue').value);
+            const fromUnit = document.getElementById('fromUnit').value;
+            const toUnit = document.getElementById('toUnit').value;
+
+            if (isNaN(inputValue)) {
+                document.getElementById('result').innerHTML = 'Please enter a valid number';
+                return;
+            }
+
+            // 先转换为米
+            const meters = inputValue * toMeters[fromUnit];
+            // 再从米转换为目标单位
+            const result = meters / toMeters[toUnit];
+
+            // 自定义部分 8: 更改结果显示格式
+            document.getElementById('result').innerHTML =
+                `${inputValue} ${fromUnit} = ${result.toFixed(4)} ${toUnit}`;
+        }
+    </script>
+</body>
+</html>
