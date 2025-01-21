@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 自定义部分 1: 更改标题 -->
     <title>Length Unit Converter - Xueyi</title>
     <style>
-        /* 自定义部分 2: 更改颜色方案和样式 */
         body {
             font-family: Arial, sans-serif;
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #f0f0f0; /* 更改背景色 */
-            color: #333; /* 更改文字颜色 */
+            background-color: #f0f0f0;
+            color: #333;
         }
 
         .converter-container {
@@ -23,11 +22,10 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* 自定义部分 3: 更改标题样式 */
         .header {
             text-align: center;
             margin-bottom: 20px;
-            color: #2c3e50; /* 更改颜色 */
+            color: #2c3e50;
         }
 
         .input-group {
@@ -46,9 +44,8 @@
             border-radius: 4px;
         }
 
-        /* 自定义部分 4: 更改按钮样式 */
         button {
-            background-color: #4CAF50; /* 更改颜色 */
+            background-color: #4CAF50;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -59,7 +56,19 @@
         button:hover {
             background-color: #45a049;
         }
+        .home-button {
+            background-color: #2196F3;
+        }
 
+        .home-button:hover {
+            background-color: #1976D2;
+        }
+
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
         #result {
             margin-top: 20px;
             padding: 10px;
@@ -67,7 +76,6 @@
             font-weight: bold;
         }
 
-        /* 自定义部分 5: 添加你的个性化样式 */
         .personal-touch {
             text-align: center;
             margin-top: 20px;
@@ -78,7 +86,6 @@
 </head>
 <body>
     <div class="converter-container">
-        <!-- 自定义部分 6: 更改标题和介绍文字 -->
         <div class="header">
             <h1>Length Unit Converter</h1>
             <p>Welcome to my unit converter. Yo Yo Check it Now!</p>
@@ -113,19 +120,23 @@
             </select>
         </div>
 
-        <button onclick="convert()">Convert</button>
+        <div class="button-container">
+            <button onclick="convert()">Convert</button>
+            <button class="back-button" onclick="window.location.href='../ce514.html'">Back to CE514</button>
+
+
+        </div>
 
         <div id="result"></div>
 
-        <!-- 自定义部分 7: 添加你的个人标识 -->
         <div class="personal-touch">
             <p>Created by Xueyi Li - XOXO</p>
-            <!-- 可以在这里添加你的logo或其他个人标识 -->
+
         </div>
     </div>
 
     <script>
-        // 转换单位到米的系数
+
         const toMeters = {
             inches: 0.0254,
             feet: 0.3048,
@@ -145,12 +156,11 @@
                 return;
             }
 
-            // 先转换为米
+
             const meters = inputValue * toMeters[fromUnit];
-            // 再从米转换为目标单位
             const result = meters / toMeters[toUnit];
 
-            // 自定义部分 8: 更改结果显示格式
+
             document.getElementById('result').innerHTML =
                 `${inputValue} ${fromUnit} = ${result.toFixed(4)} ${toUnit}`;
         }
