@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map of My Locations</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            text-align: center;
+            margin: 20px;
+        }
+        #map {
+            height: 600px;
+            width: 100%;
+            margin: 20px 0;
+        }
+        .input-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        input {
+            margin: 5px;
+            padding: 5px;
+        }
+        button {
+            margin: 10px;
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #coordsDisplay, #distanceDisplay {
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Xueyi Li</h1>
+        <p><strong>Assignment:</strong> A5 - Build an Interactive Page with Leaflet Open Source Mapping API</p>
+        <p><strong>Class:</strong> CE 514 - Geospatial Data Science</p>
+        <p><strong>Date:</strong> December 2023</p>
+    </header>
+
+    <div id="map"></div>
+
+    <div class="input-container">
+        <h3>Enter Two Locations</h3>
+        <div>
+            <label for="lat1">Latitude 1:</label>
+            <input type="text" id="lat1" placeholder="Enter Latitude 1">
+            <label for="lng1">Longitude 1:</label>
+            <input type="text" id="lng1" placeholder="Enter Longitude 1">
+        </div>
+        <div>
+            <label for="lat2">Latitude 2:</label>
+            <input type="text" id="lat2" placeholder="Enter Latitude 2">
+            <label for="lng2">Longitude 2:</label>
+            <input type="text" id="lng2" placeholder="Enter Longitude 2">
+        </div>
+        <button onclick="drawSphereAndCalculate()">Draw Shortest Path and Calculate Distance</button>
+    </div>
+
+    <div id="distanceDisplay">
+        <h3>Distance between two points:</h3>
+        <p id="distanceResult">No distance calculated yet.</p>
+    </div>
+
+    <div id="coordsDisplay">
+        <h3>Click on the map to get Latitude and Longitude</h3>
+        <p id="latLongDisplay">No coordinates selected yet.</p>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize map centered on Shanghai
+        var map = L.map('map').setView([31.230416, 121.473701], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add markers for important locations
+        L.marker([31.230416, 121.473701]).addTo(map).bindPopup("<b>Home</b><br>Shanghai, China");
+        L.marker([31.235678, 121.483701]).addTo(map).bindPopup("<b>School</b>");
+        L.marker([31.225678, 121.463701]).addTo(map).bindPopup("<b>Church</b>");
+
+        // Add property boundary polygon
+        var propertyBounds = [
+            [31.230416, 121.473701],
+            [31.230516, 121.473801],
+            [31.230616, 121.473701],
+            [31.230516, 121.473601]
+        ];
+        L.polygon(propertyBounds, {
+            color: 'blue',
+            fillColor: 'blue',
+            fillOpacity: 0.1
+        }).addTo(map);
+
+        // Add 10-minute walking radius circle
+        L.circle([31.230416, 121.473701], {
+            color: 'red',
+            fillColor: 'blue',
+            fillOpacity: 0.1,
+            radius: 800
+        }).addTo(map);
+
+        // Variables for drawn elements
+        var drawnMarkers = [];
+        var lastSphere = null;
+        var clickMarker = null;
+
+        // Great circle calculation functions
+        function toRadians(degrees) {
+            return degrees * Math.PI / 180;
+        }
+
+        function haversine(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const φ1 = toRadians(lat1);
+            const φ2 = toRadians(lat2);
+            const Δφ = toRadians(lat2 - lat1);
+            const Δλ = toRadians(lon2 - lon1);
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        function greatCircle(lat1, lon1, lat2, lon2) {
+            const rad_lat1 = toRadians(lat1);
+            const rad_lon1 = toRadians(lon1);
+            const rad_lat2 = toRadians(lat2);
+            const rad_lon2 = toRadians(lon2);
+            const dLon = rad_lon2 - rad_lon1;
+            const dLat = rad_lat2 - rad_lat1;
+            const a = Math.sin(dLat/2)**2 + Math.cos(rad_lat1) * Math.cos(rad_lat2) * Math.sin(dLon/2)**2;
+            const angular_distance = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            const points = [];
+            const num_segments = 100;
+
+            for (let i = 0; i <= num_segments; i++) {
+                const f = i / num_segments;
+                const A = Math.sin((1-f) * angular_distance) / Math.sin(angular_distance);
+                const B = Math.sin(f * angular_distance) / Math.sin(angular_distance);
+                const x = A * Math.cos(rad_lat1) * Math.cos(rad_lon1) + B * Math.cos(rad_lat2) * Math.cos(rad_lon2);
+                const y = A * Math.cos(rad_lat1) * Math.sin(rad_lon1) + B * Math.cos(rad_lat2) * Math.sin(rad_lon2);
+                const z = A * Math.sin(rad_lat1) + B * Math.sin(rad_lat2);
+                const new_lat = Math.atan2(z, Math.sqrt(x**2 + y**2));
+                const new_lon = Math.atan2(y, x);
+                points.push([new_lat * 180/Math.PI, new_lon * 180/Math.PI]);
+            }
+            return points;
+        }
+
+        function drawSphereAndCalculate() {
+            var lat1 = parseFloat(document.getElementById('lat1').value);
+            var lon1 = parseFloat(document.getElementById('lng1').value);
+            var lat2 = parseFloat(document.getElementById('lat2').value);
+            var lon2 = parseFloat(document.getElementById('lng2').value);
+
+            if (isNaN(lat1) || isNaN(lon1) || isNaN(lat2) || isNaN(lon2)) {
+                alert('Please enter valid coordinates for both locations.');
+                return;
+            }
+
+            drawnMarkers.forEach(marker => map.removeLayer(marker));
+            drawnMarkers = [];
+
+            if (lastSphere) {
+                map.removeLayer(lastSphere);
+            }
+
+            var marker1 = L.marker([lat1, lon1]).addTo(map);
+            var marker2 = L.marker([lat2, lon2]).addTo(map);
+            drawnMarkers.push(marker1, marker2);
+
+            var distance = haversine(lat1, lon1, lat2, lon2);
+            document.getElementById('distanceResult').innerText = "Distance: " + distance.toFixed(2) + " km";
+
+            var spherePoints = greatCircle(lat1, lon1, lat2, lon2);
+            lastSphere = L.polyline(spherePoints, { color: 'blue' }).addTo(map);
+        }
+
+        map.on('click', function(e) {
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+            document.getElementById('latLongDisplay').innerText =
+                "Latitude: " + lat.toFixed(6) + ", Longitude: " + lng.toFixed(6);
+
+            if (clickMarker) {
+                clickMarker.setLatLng(e.latlng);
+            } else {
+                clickMarker = L.marker(e.latlng).addTo(map);
+            }
+        });
+    </script>
+</body>
+</html>
