@@ -29,9 +29,11 @@
             padding: 5px;
         }
         button {
-            margin: 10px;
+            margin: 15px;
+            font-size: 18px;
             padding: 8px 16px;
-            background-color: #4CAF50;
+            background-color: #a89cc8;
+            border-radius: 6px;
             color: white;
             border: none;
             cursor: pointer;
@@ -46,14 +48,13 @@
 <header>
     <h1>Xueyi Li</h1>
     <p><strong>Assignment:</strong> A5 - Build an Interactive Page with Leaflet Open Source Mapping API</p>
-    <p><strong>Class:</strong> CE 514 - Geospatial Data Science</p>
-    <p><strong>Date:</strong> December 2023</p>
+    <p><strong>Date:</strong> 01/27/2025 🐍🧧🥳</p>
     <button onclick="window.location.href='../ce514.html'" style="
-        background-color: #4CAF50;
+        background-color: #a89cc8;
         color: white;
         padding: 10px 20px;
         border: none;
-        border-radius: 4px;
+        border-radius: 6px;
         cursor: pointer;
         margin-top: 10px;
     ">Back to CE514
@@ -93,37 +94,38 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         // Initialize map centered on Shanghai
-        var map = L.map('map').setView([31.230416, 121.473701], 13);
+        var map = L.map('map').setView([31.230416, 121.473701], 5); // Changed zoom from 13 to 5
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
         // Add markers for important locations
-        L.marker([31.230416, 121.473701]).addTo(map).bindPopup("<b>Home</b><br>Shanghai, China");
-        L.marker([31.235678, 121.483701]).addTo(map).bindPopup("<b>School</b>");
-        L.marker([31.225678, 121.463701]).addTo(map).bindPopup("<b>Church</b>");
+        L.marker([33.612668, 119.025279]).addTo(map).bindPopup("<b>Home</b><br>Huai'an, Jiangsu province, China");
+        L.marker([34.240998, 108.073552]).addTo(map).bindPopup("<b>College</b>");
+        L.marker([30.243457, 120.142536]).addTo(map).bindPopup("<b>Work</b><br>Hangzhou, Zhejiang province, China");
+        L.marker([24.446825, 118.066532]).addTo(map).bindPopup("<b>Sea view</b><br>Amoy, Fujian province, China");
 
         // Add property boundary polygon
         var propertyBounds = [
-            [31.230416, 121.473701],
-            [31.230516, 121.473801],
-            [31.230616, 121.473701],
-            [31.230516, 121.473601]
+            [33.612668, 119.025279], // Using your home coordinates
+            [33.612768, 119.025379],
+            [33.612868, 119.025279],
+            [33.612768, 119.025179]
         ];
         L.polygon(propertyBounds, {
             color: 'blue',
             fillColor: 'blue',
             fillOpacity: 0.1
-        }).addTo(map);
+        }).addTo(map).bindPopup("My Property Boundary (in my dream)");
 
         // Add 10-minute walking radius circle
-        L.circle([31.230416, 121.473701], {
+        L.circle([33.612668, 119.025279], {
             color: 'red',
             fillColor: 'blue',
             fillOpacity: 0.1,
             radius: 800
-        }).addTo(map);
+        }).addTo(map).bindPopup("You can reach my grandparents' home and all my schools...");
 
         // Variables for drawn elements
         var drawnMarkers = [];
