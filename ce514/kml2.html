@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CE514 KML Map</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .info-content {
+            padding: 10px;
+            max-width: 300px;
+        }
+        .info-content h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        .custom-icon {
+            background: none;
+            border: none;
+        }
+        .description {
+            margin: 20px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <div class="description">
+        <h2>How to implement KML in Leaflet</h2>
+        <pre><code>
+// Load KML files
+fetch('xyreal.kml')
+    .then(res => res.text())
+    .then(kmltext => {
+        // Parse KML
+        const parser = new DOMParser();
+        const kml = parser.parseFromString(kmltext, 'text/xml');
+        // Process placemarks...
+    });
+        </code></pre>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+
+    <script>
+        // Initialize map centered on China
+        const map = L.map('map').setView([33, 119], 5);
+
+        // Add OpenStreetMap base layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Custom icons for different locations
+        const icons = {
+            'Colledge': L.divIcon({
+                html: '🎓',
+                className: 'custom-icon',
+                iconSize: [30, 30]
+            }),
+            'Home': L.divIcon({
+                html: '🏠',
+                className: 'custom-icon',
+                iconSize: [30, 30]
+            }),
+            'work': L.divIcon({
+                html: '💼',
+                className: 'custom-icon',
+                iconSize: [100, 100]
+            })
+        };
+
+        // Load and process points from xyreal.kml
+        fetch('xyreal.kml')
+            .then(res => res.text())
+            .then(kmltext => {
+                const parser = new DOMParser();
+                const kml = parser.parseFromString(kmltext, 'text/xml');
+                const placemarks = kml.getElementsByTagName('Placemark');
+
+                Array.from(placemarks).forEach(placemark => {
+                    const coords = placemark.getElementsByTagName('coordinates')[0].textContent.trim().split(',');
+                    const description = placemark.getElementsByTagName('SimpleData')[1].textContent;
+
+                    const marker = L.marker([parseFloat(coords[1]), parseFloat(coords[0])], {
+                        icon: icons[description] || icons['Home']  // Default to home icon if type not found
+                    });
+
+                    const popupContent = `
+                        <div class="info-content">
+                            <h3>${description}</h3>
+                            <p>Location: ${coords[1]}, ${coords[0]}</p>
+                        </div>
+                    `;
+
+                    marker.bindPopup(popupContent);
+                    marker.addTo(map);
+                });
+            })
+            .catch(error => console.error('Error loading points KML:', error));
+
+        // Load and process polygon from huaian.kml
+        fetch('huaian.kml')
+            .then(res => res.text())
+            .then(kmltext => {
+                const parser = new DOMParser();
+                const kml = parser.parseFromString(kmltext, 'text/xml');
+                const placemarks = kml.getElementsByTagName('Placemark');
+
+                Array.from(placemarks).forEach(placemark => {
+                    const coordinates = placemark.getElementsByTagName('coordinates')[0].textContent
+                        .trim()
+                        .split(' ')
+                        .filter(coord => coord.length > 0)
+                        .map(coord => {
+                            const [lng, lat] = coord.split(',');
+                            return [parseFloat(lat), parseFloat(lng)];
+                        });
+
+                    const polygon = L.polygon(coordinates, {
+                        color: '#ff4444',
+                        weight: 2,
+                        opacity: 0.8,
+                        fillColor: '#ff8800',
+                        fillOpacity: 0.2
+                    });
+
+                    // Get region name from KML
+                    const nameElements = placemark.getElementsByTagName('SimpleData');
+                    let regionName = 'Region';
+                    for (let el of nameElements) {
+                        if (el.getAttribute('name') === 'ADM2_EN') {
+                            regionName = el.textContent;
+                            break;
+                        }
+                    }
+
+                    const popupContent = `
+                        <div class="info-content">
+                            <h3>${regionName}</h3>
+                            <p>Administrative Region</p>
+                        </div>
+                    `;
+
+                    polygon.bindPopup(popupContent);
+                    polygon.addTo(map);
+                });
+            })
+            .catch(error => console.error('Error loading polygon KML:', error));
+    </script>
+</body>
+</html>

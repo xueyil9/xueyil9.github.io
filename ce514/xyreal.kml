@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document id="root_doc">
+<Schema name="xykml" id="xykml">
+	<SimpleField name="id" type="float"></SimpleField>
+	<SimpleField name="des" type="string"></SimpleField>
+</Schema>
+<Folder><name>xykml</name>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#xykml">
+		<SimpleData name="id">1</SimpleData>
+		<SimpleData name="des">Colledge</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>107.094098342263,32.2185312542792</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#xykml">
+		<SimpleData name="id">2</SimpleData>
+		<SimpleData name="des">Home</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>119.004125485444,33.2019279908722</coordinates></Point>
+  </Placemark>
+  <Placemark>
+	<ExtendedData><SchemaData schemaUrl="#xykml">
+		<SimpleData name="id">3</SimpleData>
+		<SimpleData name="des">work</SimpleData>
+	</SchemaData></ExtendedData>
+      <Point><coordinates>120.206054830169,30.2517377810933</coordinates></Point>
+  </Placemark>
+</Folder>
+</Document></kml>
