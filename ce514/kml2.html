@@ -7,6 +7,8 @@
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
     <style>
         #map {
@@ -22,65 +24,58 @@
             margin: 0 0 10px 0;
             color: #333;
         }
-        .custom-icon {
+        .custom-div-icon {
             background: none;
             border: none;
         }
-        .description {
-            margin: 20px;
-            padding: 20px;
-            background: #f5f5f5;
-            border-radius: 5px;
+        .marker-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+        .marker-icon i {
+            font-size: 24px;
+        }
+        .college-icon i { color: #4CAF50; }
+        .home-icon i { color: #2196F3; }
+        .work-icon i { color: #F44336; }
     </style>
 </head>
 <body>
     <div id="map"></div>
 
-    <div class="description">
-        <h2>How to implement KML in Leaflet</h2>
-        <pre><code>
-// Load KML files
-fetch('xyreal.kml')
-    .then(res => res.text())
-    .then(kmltext => {
-        // Parse KML
-        const parser = new DOMParser();
-        const kml = parser.parseFromString(kmltext, 'text/xml');
-        // Process placemarks...
-    });
-        </code></pre>
-    </div>
-
     <!-- Leaflet JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 
     <script>
-        // Initialize map centered on China
         const map = L.map('map').setView([33, 119], 5);
 
-        // Add OpenStreetMap base layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Custom icons for different locations
+        // Custom icons using Font Awesome
+        const createCustomIcon = (iconClass, colorClass) => {
+            return L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div class="marker-icon ${colorClass}">
+                         <i class="${iconClass}"></i>
+                       </div>`,
+                iconSize: [40, 40],
+                iconAnchor: [20, 20],
+                popupAnchor: [0, -20]
+            });
+        };
+
         const icons = {
-            'Colledge': L.divIcon({
-                html: '🎓',
-                className: 'custom-icon',
-                iconSize: [30, 30]
-            }),
-            'Home': L.divIcon({
-                html: '🏠',
-                className: 'custom-icon',
-                iconSize: [30, 30]
-            }),
-            'work': L.divIcon({
-                html: '💼',
-                className: 'custom-icon',
-                iconSize: [100, 100]
-            })
+            'Colledge': createCustomIcon('fas fa-graduation-cap', 'college-icon'),
+            'Home': createCustomIcon('fas fa-home', 'home-icon'),
+            'work': createCustomIcon('fas fa-briefcase', 'work-icon')
         };
 
         // Load and process points from xyreal.kml
@@ -96,7 +91,7 @@ fetch('xyreal.kml')
                     const description = placemark.getElementsByTagName('SimpleData')[1].textContent;
 
                     const marker = L.marker([parseFloat(coords[1]), parseFloat(coords[0])], {
-                        icon: icons[description] || icons['Home']  // Default to home icon if type not found
+                        icon: icons[description] || icons['Home']
                     });
 
                     const popupContent = `
@@ -138,7 +133,6 @@ fetch('xyreal.kml')
                         fillOpacity: 0.2
                     });
 
-                    // Get region name from KML
                     const nameElements = placemark.getElementsByTagName('SimpleData');
                     let regionName = 'Region';
                     for (let el of nameElements) {
