@@ -155,24 +155,25 @@
             const rad_lon2 = toRadians(lon2);
             const dLon = rad_lon2 - rad_lon1;
             const dLat = rad_lat2 - rad_lat1;
-            const a = Math.sin(dLat/2)**2 + Math.cos(rad_lat1) * Math.cos(rad_lat2) * Math.sin(dLon/2)**2;
-            const angular_distance = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            const a = Math.sin(dLat / 2) ** 2 + Math.cos(rad_lat1) * Math.cos(rad_lat2) * Math.sin(dLon / 2) ** 2;
+            const angular_distance = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
             const points = [];
-            const num_segments = 100;
+            const num_segments = 360;
 
             for (let i = 0; i <= num_segments; i++) {
                 const f = i / num_segments;
-                const A = Math.sin((1-f) * angular_distance) / Math.sin(angular_distance);
+                const A = Math.sin((1 - f) * angular_distance) / Math.sin(angular_distance);
                 const B = Math.sin(f * angular_distance) / Math.sin(angular_distance);
                 const x = A * Math.cos(rad_lat1) * Math.cos(rad_lon1) + B * Math.cos(rad_lat2) * Math.cos(rad_lon2);
                 const y = A * Math.cos(rad_lat1) * Math.sin(rad_lon1) + B * Math.cos(rad_lat2) * Math.sin(rad_lon2);
                 const z = A * Math.sin(rad_lat1) + B * Math.sin(rad_lat2);
-                const new_lat = Math.atan2(z, Math.sqrt(x**2 + y**2));
+                const new_lat = Math.atan2(z, Math.sqrt(x ** 2 + y ** 2));
                 const new_lon = Math.atan2(y, x);
-                points.push([new_lat * 180/Math.PI, new_lon * 180/Math.PI]);
+                points.push([new_lat * 180 / Math.PI, new_lon * 180 / Math.PI]);
             }
             return points;
         }
+
 
         function drawSphereAndCalculate() {
             var lat1 = parseFloat(document.getElementById('lat1').value);
