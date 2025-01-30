@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+    <Document>
+        <name>My Locations</name>
+        <description>Important places in my life</description>
+
+        <!-- Style for all locations -->
+        <Style id="locationStyle">
+            <IconStyle>
+                <color>ff0000ff</color>
+                <scale>1.2</scale>
+            </IconStyle>
+            <LabelStyle>
+                <color>ff0000ff</color>
+                <scale>1.0</scale>
+            </LabelStyle>
+        </Style>
+
+        <!-- Home -->
+        <Placemark>
+            <name>Home</name>
+            <description>Huai'an, Jiangsu province, China</description>
+            <styleUrl>#locationStyle</styleUrl>
+            <Point>
+                <coordinates>119.025279,33.612668,0</coordinates>
+            </Point>
+        </Placemark>
+
+        <!-- College -->
+        <Placemark>
+            <name>College</name>
+            <description>University Location</description>
+            <styleUrl>#locationStyle</styleUrl>
+            <Point>
+                <coordinates>108.073552,34.240998,0</coordinates>
+            </Point>
+        </Placemark>
+
+        <!-- Work -->
+        <Placemark>
+            <name>Work</name>
+            <description>Hangzhou, Zhejiang province, China</description>
+            <styleUrl>#locationStyle</styleUrl>
+            <Point>
+                <coordinates>120.142536,30.243457,0</coordinates>
+            </Point>
+        </Placemark>
+
+        <!-- Sea view -->
+        <Placemark>
+            <name>Sea view</name>
+            <description>Amoy, Fujian province, China</description>
+            <styleUrl>#locationStyle</styleUrl>
+            <Point>
+                <coordinates>118.066532,24.446825,0</coordinates>
+            </Point>
+        </Placemark>
+
+        <!-- Property Boundary as a Polygon -->
+        <Placemark>
+            <name>Property Boundary</name>
+            <description>My Property Boundary (in my dream)</description>
+            <Style>
+                <LineStyle>
+                    <color>ff0000ff</color>
+                    <width>2</width>
+                </LineStyle>
+                <PolyStyle>
+                    <color>4d0000ff</color>
+                </PolyStyle>
+            </Style>
+            <Polygon>
+                <outerBoundaryIs>
+                    <LinearRing>
+                        <coordinates>
+                            119.025279,33.612668,0
+                            119.025379,33.612768,0
+                            119.025279,33.612868,0
+                            119.025179,33.612768,0
+                            119.025279,33.612668,0
+                        </coordinates>
+                    </LinearRing>
+                </outerBoundaryIs>
+            </Polygon>
+        </Placemark>
+
+        <!-- Circle (Walking Radius) -->
+        <Placemark>
+            <name>10-minute Walking Radius</name>
+            <description>You can reach my grandparents' home and all my schools...</description>
+            <Style>
+                <LineStyle>
+                    <color>ffff0000</color>
+                    <width>2</width>
+                </LineStyle>
+                <PolyStyle>
+                    <color>4d0000ff</color>
+                </PolyStyle>
+            </Style>
+
+            <Polygon>
+                <outerBoundaryIs>
+                    <LinearRing>
+                        <coordinates>
+                            119.025279,33.612668,0
+                            119.033279,33.612668,0
+                            119.025279,33.620668,0
+                            119.017279,33.612668,0
+                            119.025279,33.604668,0
+                            119.025279,33.612668,0
+                        </coordinates>
+                    </LinearRing>
+                </outerBoundaryIs>
+            </Polygon>
+        </Placemark>
+
+    </Document>
+</kml>

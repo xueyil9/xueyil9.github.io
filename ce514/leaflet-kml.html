@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My KML Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src='https://unpkg.com/@mapbox/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js'></script>
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+            margin: 20px 0;
+        }
+        .documentation {
+            margin: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        code {
+            display: block;
+            background-color: #eee;
+            padding: 10px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        // 初始化地图
+        var map = L.map('map').setView([31.230416, 121.473701], 5);
+
+        // 添加底图
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // 添加KML图层（包含错误处理）
+        var kmlLayer = omnivore.kml('./location.kml')
+            .on('ready', function() {
+                console.log('KML loaded successfully!');
+                map.fitBounds(kmlLayer.getBounds());
+            })
+            .on('error', function(error) {
+                console.log('Error loading KML:', error);
+            })
+            .addTo(map);
+    </script>
+
+    <div class="documentation">
+        <h2>How I Created This Map</h2>
+        <p>I created this map using the following steps:</p>
+        <ol>
+            <li>First, I created KML file manually with my location data</li>
+            <li>Then, I used the Leaflet-omnivore plugin to load the KML:
+                <code>var kmlLayer = omnivore.kml('location.kml').addTo(map);</code>
+            </li>
+            <li>I added error handling to debug any loading issues</li>
+        </ol>
+    </div>
+</body>
+</html>
