@@ -9,12 +9,52 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        #map {
+            height: 400px;
+            width: 30%; /* Made significantly smaller for better spacing */
+            margin: 0 auto;
+            margin-bottom: 20px;
+        }
+
+
+
+
+        .info-content {
+            padding: 10px;
+            max-width: 300px;
+        }
+
+        .info-content h3 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .custom-icon {
+            background: none;
+            border: none;
+        }
+
+        .description {
+            margin: 20px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 5px;
+        }
+    </style>
 
     <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
         #map {
             height: 600px;
             width: 100%;
             margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
         }
         .info-content {
             padding: 10px;
@@ -44,22 +84,113 @@
         .college-icon i { color: #4CAF50; }
         .home-icon i { color: #2196F3; }
         .work-icon i { color: #F44336; }
+        .code-explanation {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        .code-block {
+            background: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
     </style>
 </head>
 <body>
+    <h2>CE514 KML Map Implementation</h2>
     <div id="map"></div>
+
+    <div class="code-explanation">
+        <h2>How This Map Was Created</h2>
+
+        <h3>1. Setting Up the Base Map</h3>
+        <div class="code-block">
+            <code>
+                // Initialize the map<br>
+                const map = L.map('map').setView([33, 119], 7);<br><br>
+                // Add OpenStreetMap tiles<br>
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {<br>
+                &nbsp;&nbsp;attribution: '© OpenStreetMap contributors'<br>
+                }).addTo(map);
+            </code>
+        </div>
+
+        <h3>2. Creating Custom Icons</h3>
+        <div class="code-block">
+            <code>
+                // Custom icon creation function<br>
+                const createCustomIcon = (iconClass, colorClass) => {<br>
+                &nbsp;&nbsp;return L.divIcon({<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;className: 'custom-div-icon',<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;html: `&lt;div class="marker-icon ${colorClass}"&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;i class="${iconClass}"&gt;&lt;/i&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;`,<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;iconSize: [40, 40],<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;iconAnchor: [20, 20]<br>
+                &nbsp;&nbsp;});<br>
+                };
+            </code>
+        </div>
+
+        <h3>3. Loading and Processing KML Files</h3>
+        <div class="code-block">
+            <code>
+                // Load KML file<br>
+                fetch('xyreal.kml')<br>
+                &nbsp;&nbsp;.then(res => res.text())<br>
+                &nbsp;&nbsp;.then(kmltext => {<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;const parser = new DOMParser();<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;const kml = parser.parseFromString(kmltext, 'text/xml');<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;// Process placemarks...<br>
+                });
+            </code>
+        </div>
+
+        <h3>4. Adding Interactive Features</h3>
+        <div class="code-block">
+            <code>
+                // Create popup content<br>
+                const popupContent = `<br>
+                &nbsp;&nbsp;&lt;div class="info-content"&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;h3&gt;${description}&lt;/h3&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Location: ${coords[1]}, ${coords[0]}&lt;/p&gt;<br>
+                &nbsp;&nbsp;&lt;/div&gt;`;<br><br>
+                // Bind popup to marker<br>
+                marker.bindPopup(popupContent);
+            </code>
+        </div>
+
+        <h3>Implementation Notes:</h3>
+        <ul>
+            <li>Used Font Awesome icons for better scalability and customization</li>
+            <li>Implemented custom styling for markers with CSS</li>
+            <li>Added interactive popups with formatted HTML content</li>
+            <li>Used fetch API to load KML files asynchronously</li>
+            <li>Implemented error handling for KML loading and parsing</li>
+            <li>Added polygon support with custom styling</li>
+        </ul>
+    </div>
 
     <!-- Leaflet JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 
     <script>
+        // [Previous JavaScript code remains the same]
         const map = L.map('map').setView([33, 119], 5);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Custom icons using Font Awesome
         const createCustomIcon = (iconClass, colorClass) => {
             return L.divIcon({
                 className: 'custom-div-icon',
@@ -78,7 +209,6 @@
             'work': createCustomIcon('fas fa-briefcase', 'work-icon')
         };
 
-        // Load and process points from xyreal.kml
         fetch('xyreal.kml')
             .then(res => res.text())
             .then(kmltext => {
@@ -107,7 +237,6 @@
             })
             .catch(error => console.error('Error loading points KML:', error));
 
-        // Load and process polygon from huaian.kml
         fetch('huaian.kml')
             .then(res => res.text())
             .then(kmltext => {
