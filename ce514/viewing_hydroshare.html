@@ -2,6 +2,10 @@
 <html>
 <head>
     <title>My WMS Layers Map</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <style>
@@ -47,8 +51,10 @@
     </style>
 </head>
 <body>
-    <h1>HydroShare WMS Layers</h1>
-
+    <h1> Great Salt Lake Basin </h1>
+    <p style="text-align: center; color: #666; font-size: 14px; font-family: Arial, sans-serif;">
+        While I dream of mapping Paul's ancient journeys and my family's roots, for now I've been working on the surface-groundwater dynamics in Great Salt Lake Basin..
+    </p>
     <div class="layer-controls">
         <button onclick="toggleLayer(pointLayer)">Toggle Points</button>
         <button onclick="toggleLayer(lineLayer)">Toggle Lines</button>
@@ -57,9 +63,9 @@
 
     <div id="map"></div>
 
-    <h2>WMS Layer Code Example</h2>
+    <h2>WMS Layer Code Used</h2>
     <pre><code>
-    // Example WMS Layer Code
+    // WMS Layer Code
     L.tileLayer.wms('https://geoserver.hydroshare.org/geoserver/HS-5e4b5aa8acca45b1a6d8c44dce8e782a/wms', {
         layers: 'HS-5e4b5aa8acca45b1a6d8c44dce8e782a:gsl_basin',
         format: 'image/png',
