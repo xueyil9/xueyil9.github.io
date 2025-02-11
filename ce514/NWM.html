@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NWM Forecast Viewer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+
+        section {
+            margin-bottom: 30px;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .input-section {
+            margin: 20px 0;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            width: 200px;
+        }
+
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #forecast-container {
+            display: none;
+            margin: 20px 0;
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        #streamflowChart {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 500px;
+            margin: 20px 0;
+            border: 1px solid #ccc;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .scroll-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            input[type="text"] {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .map-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Xueyi Li</h1>
+        <h2>6. A8 - National Water Model</h2>
+        <p>CE 514 | Winter 2025 | February 11, 2025</p>
+    </header>
+
+    <div class="container">
+        <section>
+            <h1>National Water Model (NWM) Forecasts</h1>
+            <h2>Overview</h2>
+            <p>The <strong>National Water Model (NWM)</strong> is a hydrologic model developed by the
+            <strong>National Oceanic and Atmospheric Administration (NOAA)</strong> to provide continuous,
+            high-resolution forecasts of streamflow and hydrologic conditions across the United States.</p>
+
+            <ul>
+                <li><strong>Real-time and Forecasted Streamflow Predictions:</strong> Provides hourly, daily,
+                    and seasonal forecasts for over <strong>2.7 million stream reaches</strong> in the U.S.</li>
+                <li><strong>High-Resolution Hydrologic Modeling:</strong> Uses the <strong>National Hydrography Dataset (NHDPlus)</strong>
+                    for detailed river network simulations.</li>
+                <li><strong>Multiple Forecast Scenarios:</strong> Includes short-range (hourly up to 18 hours),
+                    medium-range (10-day), and long-range (30-day) forecasts.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Resources</h2>
+            <p>Learn more about the NWM:</p>
+            <ul>
+                <li><a href="https://water.noaa.gov/about/nwm" target="_blank">NOAA NWM Overview</a></li>
+                <li><a href="https://www.sciencedirect.com/science/article/pii/S1364815224001841" target="_blank">ScienceDirect Paper: BigQuery dataset of the U.S. National Water Model operational forecasts</a></li>
+                <li><a href="https://onlinelibrary.wiley.com/doi/full/10.1111/1752-1688.13184" target="_blank">Wiley Online Library Paper: NOAA's National Water Model</a></li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Enter Reach ID:</h2>
+            <p>Browse the National Water Prediction Service website to find the Reach ID of your water system of interest.</p>
+            <div class="map-container">
+                <iframe src="https://water.noaa.gov/#@=-92.0865368,37.2143851,3.8382164&b=topographic"></iframe>
+            </div>
+            <div class="input-section">
+                <input type="text" id="reachIdInput" placeholder="Enter a Reach ID (e.g., 10274616)">
+                <button onclick="getForecast()">Get Forecast</button>
+            </div>
+        </section>
+
+        <div id="forecast-container">
+            <h3>Forecast Results</h3>
+            <div class="chart-container">
+                <canvas id="streamflowChart"></canvas>
+            </div>
+            <div class="scroll-container">
+                <table id="timeseries-datatable">
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Flow value (cms)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <section>
+            <h2>How It Works</h2>
+            <p>The streamflow forecast tool retrieves and displays forecasted water flow data based on a user-provided
+            <strong>Reach ID</strong>. Here's how it works:</p>
+
+            <h3>1. User Input</h3>
+            <p>The user enters a Reach ID into the input field and clicks the "Get Forecast" button.</p>
+
+            <h3>2. Fetching Forecast Data</h3>
+            <p>The tool sends a request to the NOAA NWPS API using the entered Reach ID.</p>
+
+            <h3>3. Displaying the Data</h3>
+            <p>The forecast section appears with:</p>
+            <ul>
+                <li><strong>A Table:</strong> Displays time-stamped streamflow values.</li>
+                <li><strong>A Chart:</strong> A visually appealing line graph showing streamflow trends over time.</li>
+            </ul>
+        </section>
+    </div>
+
+    <script>
+        async function getForecast() {
+            const reachId = document.getElementById('reachIdInput').value;
+
+            if (!reachId) {
+                alert("Please enter a Reach ID.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.water.noaa.gov/nwps/v1/reaches/${reachId}/streamflow?series=short_range`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error status: ${response.status}`);
+                }
+
+                const jsonData = await response.json();
+
+                if (!jsonData.shortRange?.series?.data?.length) {
+                    throw new Error("No forecast data available for this Reach ID.");
+                }
+
+                const streamflowData = jsonData.shortRange.series.data;
+                updateTable(streamflowData);
+                updateChart(streamflowData);
+
+                document.getElementById('forecast-container').style.display = 'block';
+
+                // 滚动到结果区域
+                document.getElementById('forecast-container').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            } catch (error) {
+                alert(error.message);
+                document.getElementById('forecast-container').style.display = 'none';
+            }
+        }
+
+        function updateTable(data) {
+            const tbody = document.querySelector('#timeseries-datatable tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(item => {
+                const row = tbody.insertRow();
+                row.insertCell(0).textContent = new Date(item.validTime).toLocaleString();
+                row.insertCell(1).textContent = item.flow.toFixed(2);
+            });
+        }
+
+        function updateChart(data) {
+            const ctx = document.getElementById('streamflowChart').getContext('2d');
+            let chart = Chart.getChart('streamflowChart');
+            
+            if (chart) {
+                chart.destroy();
+            }
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(item => new Date(item.validTime).toLocaleString()),
+                    datasets: [{
+                        label: 'Streamflow (cms)',
+                        data: data.map(item => item.flow),
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Flow (cms)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
