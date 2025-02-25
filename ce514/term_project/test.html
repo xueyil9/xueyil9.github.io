@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>RDR2 Frontier Waterways</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Old+Standard+TT:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Color Variables */
+        :root {
+            --primary-dark: #2E1A1A; /* Dark Brown */
+            --accent-red: #8B3A3A; /* Rust Red */
+            --parchment: #F5EEDC; /* Parchment */
+            --metal-gold: #eccb9f; /* Metal Gold */
+        }
+
+        /* Global Styles */
+        body {
+            margin: 0;
+            background: linear-gradient(rgba(46, 26, 26, 0.9), rgba(46, 26, 26, 0.95)), var(--primary-dark);
+            font-family: 'Old Standard TT', serif;
+            color: var(--parchment);
+            min-height: 100vh;
+        }
+
+        /* Common Layout Styles */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .split-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .text-content {
+            padding: 1.5rem 2rem;
+            background: rgba(46, 26, 26, 0.6);
+            border-radius: 8px;
+        }
+
+        .image-content {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('rd6.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 3rem 2rem;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Remove white halo */
+            color: #FFFFFF;
+            font-weight: 900;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header h1 {
+            font-family: 'Cinzel Decorative', cursive;
+            color: var(--metal-gold);
+            margin: 0;
+            font-size: 3rem;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.9), /* Sharper shadow */
+                         2px 2px 2px rgba(0, 0, 0, 0.8),
+                         0 0 25px rgba(238, 204, 159, 0.63), /* Medium glow */
+                         0 0 35px rgba(217, 185, 142, 0.3); /* Outer glow */
+            letter-spacing: 2px;
+            font-weight: 900;
+            -webkit-font-smoothing: antialiased; /* Sharper text rendering */
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .header h2 {
+            font-family: 'Playfair Display', serif;
+            color: linear-gradient(
+                45deg,
+                #CD7F32 0%, /* Base bronze */
+                #E8B675 25%, /* Light highlight */
+                #CD7F32 50%, /* Back to base */
+                #8B5E3C 75%, /* Darker shade */
+                #CD7F32 100% /* Base bronze */
+            );
+            margin: 1.2rem 0;
+            font-size: 2.2rem;
+            font-style: italic;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.9),
+                         2px 2px 2px rgba(0, 0, 0, 0.8),
+                         0 0 25px rgba(238, 204, 159, 0.63),
+                         0 0 35px rgba(217, 185, 142, 0.3);
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            text-transform: capitalize;
+            position: relative;
+            display: inline-block;
+            padding: 0.8rem 2.5rem;
+            background: linear-gradient(
+                to bottom,
+                rgba(89, 55, 33, 0.15) 0%,
+                rgba(89, 55, 33, 0.25) 100%
+            );
+            border: 2px solid var(--metal-gold);
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            -webkit-text-stroke: 0.5px rgba(89, 55, 33, 0.5);
+        }
+
+        .header h2::before, .header h2::after {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 216, 147, 0.7);
+            font-size: 1.8rem;
+            text-shadow: 0 0 10px rgba(255, 216, 147, 0.5);
+        }
+
+        .header h2::before {
+            left: -20px;
+        }
+
+        .header h2::after {
+            right: -20px;
+        }
+
+        .header p {
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        /* Navigation Styles */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 1.5rem;
+            padding: 0 2rem;
+        }
+
+        .nav-card {
+            padding: 0.6rem 1rem;
+            text-align: center;
+            border: 2px solid var(--metal-gold);
+            border-radius: 6px;
+            background: rgba(139, 58, 58, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8),
+                         0 0 15px rgba(197, 168, 128, 0.4); /* Add glow effect */
+            margin-bottom: 0.8rem;
+        }
+
+        .nav-card:hover {
+            background: rgba(139, 58, 58, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3),
+                        0 0 20px rgba(197, 168, 128, 0.3); /* Increase glow on hover */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9),
+                         0 0 20px rgba(197, 168, 128, 0.6); /* Enhance glow on hover */
+        }
+
+        .nav-card h2 {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 1.2rem;
+            color: var(--metal-gold);
+            margin: 0.3rem 0;
+        }
+
+        .nav-card p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0.3rem 0;
+        }
+
+        /* Profile Section Styles */
+        .profile-section {
+            padding: 2rem 0;
+            background: rgba(46, 26, 26, 0.8);
+            margin-top: -1rem;
+        }
+
+        .profile-section .split-section {
+            grid-template-columns: 2fr 1fr;
+        }
+
+        .profile-section .text-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+            margin-bottom: 0;
+        }
+
+        .profile-photo {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid var(--metal-gold);
+            box-shadow: 0 0 20px rgba(197, 168, 128, 0.3);
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Game Intro Section Styles */
+        .game-intro {
+            padding: 2rem 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Text Block Styles */
+        .text-block {
+            margin: 1rem 0;
+            padding: 2rem;
+            background: rgba(46, 26, 26, 0.8);
+            border-left: 4px solid var(--metal-gold);
+        }
+
+        .centered {
+            text-align: center;
+            max-width: 800px;
+            margin: 3rem auto;
+        }
+
+        /* Image Grid Styles */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+            padding: 0 4rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .image-grid img {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            aspect-ratio: 3/4;
+        }
+
+        .image-grid figcaption {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--parchment);
+            margin-top: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .image-grid-three {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+            padding: 0 2rem;
+        }
+
+        .location-card {
+            text-align: center;
+        }
+
+        .location-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 6px;
+            aspect-ratio: 2/3;
+        }
+
+        .location-caption {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            color: var(--parchment);
+            line-height: 1.4;
+        }
+
+        /* Section Spacing */
+        .game-intro, .course-section, .comparison-section {
+            padding: 1.5rem 0;
+            margin: 1rem 0;
+        }
+
+        /* Unified text styles */
+        .game-intro p, .course-section p, .comparison-section p, .text-block p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+        }
+
+        /* Content Section Styles */
+        .content-section {
+            background-color: rgba(46, 26, 26, 0.8);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: var(--primary-dark);
+            margin-top: 2rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* List Styles */
+        ul {
+            padding-left: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        li {
+            margin: 0.8rem 0;
+            padding-left: 0.5rem;
+            border-left: 2px solid var(--metal-gold);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-grid,
+            .split-section,
+            .image-grid-three,
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-photo {
+                margin: 0 auto 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Header (Simple, Light Overlay) -->
+<div class="header">
+    <h1>Red Dead Redemption 2 </h1>
+    <h2>Frontier Waterways</h2>
+    <p>Experience the fusion of iconic Western legends with real hydrological data</p>
+</div>
+
+<!-- Navigation -->
+<div class="nav-grid">
+    <div class="nav-card" onclick="location.href='forecast.html'">
+        <h2>Live Forecasts</h2>
+        <p>Real-time predictions across the frontier</p>
+    </div>
+    <div class="nav-card" onclick="location.href='how-it-works.html'">
+        <h2>How It Works</h2>
+        <p>The code I used</p>
+    </div>
+    <div class="nav-card" onclick="window.open('https://water.noaa.gov/about/nwm', '_blank')">
+        <h2>About NWM</h2>
+        <p>Learn about US National Water Model</p>
+    </div>
+</div>
+
+<!-- About Me Section -->
+<section class="profile-section">
+    <div class="container">
+        <div class="split-section">
+            <div class="text-content">
+                <h2>About Me</h2>
+                <p>Yo, here's <b>Xueyi</b>.</p>
+                <p>PhD grind, but I walk my own line, 🖐️
+                <p>Sketchin' and strummin' when I'm off that time. 🖌️</p>
+                <p>From data to beats, I keep it real, 🫵</p>
+                <p>Flow like a river, sharp like steel. 💦</p>
+                <p>Catch me vibin' with a brush or a rhyme, ✍️</p>
+                <p>Doin' my thing, one step at a time. 🤯</p>
+
+                <p><a href="https://xueyil9.github.io/interests.html" style="color: var(--metal-gold); text-decoration: none;">➡️<b>Check it out</b>⬅️</a> and ride this wave with me. 💗</p>
+            </div>
+            <div class="image-content">
+                <img src="me4.jpeg" alt="Profile Photo" class="profile-photo">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Game Introduction Section -->
+<section class="game-intro">
+    <div class="container">
+        <div class="text-block">
+            <h2>The World of Red Dead Redemption 2</h2>
+        </div>
+        <p>Red Dead Redemption 2 is an action-adventure game developed and published
+            by Rockstar Games in 2018. Set in a fictionalized representation of
+            the American Wild West during 1899, the game follows Arthur Morgan,
+            an outlaw and member of the Van der Linde gang.
+            As the era of the Wild West comes to an end,
+            Arthur must navigate the challenges of survival, loyalty,
+            and morality while being pursued by law enforcement and rival gangs.
+            The game features an open-world environment where players can engage in shootouts,
+            hunting, horseback riding, and various side activities that contribute to the game's rich storytelling and
+            immersive experience.</p>
+
+        <p>One of the game's notable locations is Saint Denis, a bustling city inspired by
+            19th-century New Orleans. This connection is evident in the city's architecture,
+            cultural diversity, and vibrant atmosphere, reflecting the historical essence of New Orleans.</p>
+
+        <div class="image-grid">
+            <figure>
+                <img src="Horse%20ride.png" alt="In-game River">
+                <figcaption>Arthur riding through the river</figcaption>
+            </figure>
+            <figure>
+                <img src="horse.JPG" alt="Water Ecosystem">
+                <figcaption>Me riding in 'The World of RDR 2'</figcaption>
+            </figure>
+        </div>
+    </div>
+</section>
+
+<!-- Reality Comparison Section -->
+<section class="game-intro">
+    <div class="container">
+        <div class="text-block">
+            <h2>Virtual vs Reality in Saint Denis</h2>
+            <p>From the bustling streets of Saint Denis to the untamed wilderness, each location tells its own story of
+                the American frontier. These carefully crafted environments showcase the intricate balance between
+                civilization and nature.</p>
+            <p> (Image from RedNote @江晓楠) </p>
+        </div>
+        <div class="image-grid-three">
+            <div class="location-card">
+                <img src="oak%20alley%20plantation.jpeg" alt="Saint Denis">
+                <p class="location-caption">Oak Alley Plantation
+            </div>
+            <div class="location-card">
+                <img src="french%20quarter.jpeg" alt="Valentine">
+                <p class="location-caption">French Quarter</p>
+            </div>
+            <div class="location-card">
+                <img src="jefferson%20square.jpeg" alt="Rhodes">
+                <p class="location-caption">Jefferson Square
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Course Introduction Section -->
+<section class="course-section">
+    <div class="container">
+        <div class="text-block centered">
+            <h2>About BYU CE 514: Geospatial Software Dev</h2>
+            <p>The coursework emphasizes real-time data processing and
+                interactive web development for environmental applications.</p>
+            <p>I would like to express my heartfelt gratitude to Dr. Dan Ames for teaching this course.</p>
+            <p>I am grateful to my lovely classmates ❤️</p>
+            <p>Link to BYU Hydroinformatics Lab: https://hydroinformatics.byu.edu/ </p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>Created by Xueyi Li | Data sources: NOAA NWM, USGS | Not affiliated with Rockstar Games</p>
+</footer>
+</body>
+</html>
