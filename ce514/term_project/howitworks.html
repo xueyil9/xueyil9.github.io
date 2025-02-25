@@ -2,9 +2,503 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - RDR2 Frontier Waterways</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Old+Standard+TT:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-dark: #2E1A1A; /* Dark Brown */
+            --accent-red: #8B3A3A; /* Rust Red */
+            --parchment: #F5EEDC; /* Parchment */
+            --metal-gold: #eccb9f; /* Metal Gold */
+            --code-bg: #1E1E1E; /* Dark background for code */
+            --code-text: #D4D4D4; /* Light text for code */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Old Standard TT', serif;
+            background: linear-gradient(rgba(46, 26, 26, 0.9), rgba(46, 26, 26, 0.95)), #2E1A1A;
+            color: #F5EEDC;
+            line-height: 1.6;
+        }
+
+        #container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(46, 26, 26, 0.8);
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 2px solid #eccb9f;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Cinzel Decorative', cursive;
+            color: #eccb9f;
+            font-size: 2rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        .nav-links {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-links a {
+            display: inline-block;
+            padding: 8px 15px;
+            margin: 0 10px;
+            background: rgba(139, 58, 58, 0.2);
+            color: #eccb9f;
+            text-decoration: none;
+            border: 1px solid #eccb9f;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(139, 58, 58, 0.4);
+        }
+
+        .section {
+            background: rgba(46, 26, 26, 0.6);
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            border-left: 4px solid #eccb9f;
+        }
+
+        h2 {
+            color: #eccb9f;
+            border-bottom: 1px solid rgba(236, 203, 159, 0.3);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #eccb9f;
+            margin-top: 25px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: #eccb9f;
+            text-decoration: underline;
+        }
+
+        .code-container {
+            background: var(--code-bg);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'Fira Mono', monospace;
+            color: var(--code-text);
+            display: block;
+            white-space: pre;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .inline-code {
+            font-family: 'Fira Mono', monospace;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        .highlight {
+            color: #9CDCFE; /* Light blue */
+        }
+
+        .highlight-orange {
+            color: #CE9178; /* Orange for strings */
+        }
+
+        .highlight-green {
+            color: #6A9955; /* Green for comments */
+        }
+
+        .highlight-yellow {
+            color: #DCDCAA; /* Yellow for functions */
+        }
+
+        .highlight-purple {
+            color: #C586C0; /* Purple for keywords */
+        }
+
+        .tech-diagram {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            display: block;
+            border: 1px solid #eccb9f;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+        }
+
+        .two-column {
+            display: flex;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .column {
+            flex: 1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        th, td {
+            border: 1px solid rgba(236, 203, 159, 0.3);
+            padding: 10px;
+        }
+
+        th {
+            background: rgba(139, 58, 58, 0.3);
+            color: #eccb9f;
+            text-align: left;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(236, 203, 159, 0.3);
+            font-size: 0.9rem;
+            color: rgba(245, 238, 220, 0.7);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .two-column {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div id="container">
+        <header>
+            <h1>How It Works - RDR2 Frontier Waterways</h1>
+        </header>
 
+        <div class="nav-links">
+            <a href="term_index.html">Home</a>
+            <a href="forecast.html">Forecasts</a>
+        </div>
+
+        <section id="map-section" class="section">
+            <h2>Leaflet Map Implementation</h2>
+            <p>Leaflet.js is an open-source JavaScript library for mobile-friendly interactive maps. Our implementation includes custom styling, KML file integration, and interactive markers.</p>
+
+            <h3>1. Map Initialization</h3>
+            <p>The map is initialized with a center point on New Orleans and configured with a custom zoom level:</p>
+
+            <div class="code-container">
+                <code><span class="highlight-green">// Initialize the map centered on New Orleans</span>
+<span class="highlight-purple">var</span> <span class="highlight">map</span> = L.map(<span class="highlight-orange">'map'</span>).setView([<span class="highlight">29.9511</span>, <span class="highlight">-90.0715</span>], <span class="highlight">11</span>);
+
+<span class="highlight-green">// Add a tile layer (OpenStreetMap)</span>
+L.tileLayer(<span class="highlight-orange">'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'</span>, {
+    attribution: <span class="highlight-orange">'© OpenStreetMap contributors'</span>
+}).addTo(map);</code>
+            </div>
+
+            <h3>2. KML Layer Integration</h3>
+            <p>We use Leaflet-Omnivore to load and display KML files containing watershed boundaries and river paths:</p>
+
+            <div class="code-container">
+                <code><span class="highlight-green">// Style for watershed polygon</span>
+<span class="highlight-purple">var</span> <span class="highlight">watershedStyle</span> = {
+    color: <span class="highlight-orange">'#8B3A3A'</span>,       <span class="highlight-green">// Rust red outline</span>
+    weight: <span class="highlight">2</span>,              <span class="highlight-green">// Line thickness</span>
+    opacity: <span class="highlight">0.8</span>,           <span class="highlight-green">// Outline opacity</span>
+    fillColor: <span class="highlight-orange">'#8B3A3A'</span>,   <span class="highlight-green">// Rust red fill</span>
+    fillOpacity: <span class="highlight">0.25</span>,      <span class="highlight-green">// More visible fill</span>
+    dashArray: <span class="highlight-orange">'5,5'</span>        <span class="highlight-green">// Dashed line pattern</span>
+};
+
+<span class="highlight-green">// Load Mississippi watershed KML</span>
+<span class="highlight-purple">var</span> <span class="highlight">watershedLayer</span> = omnivore.kml(<span class="highlight-orange">'path/to/your/mississippi_watershed.kml'</span>, <span class="highlight">null</span>, L.geoJSON(<span class="highlight">null</span>, {
+    style: watershedStyle
+}))
+.on(<span class="highlight-orange">'ready'</span>, <span class="highlight-purple">function</span>() {
+    <span class="highlight-purple">this</span>.addTo(map);
+});</code>
+            </div>
+
+            <h3>3. Custom Markers</h3>
+            <p>Interactive markers are added to represent monitoring stations, with custom icons and popup information:</p>
+
+            <div class="code-container">
+                <code><span class="highlight-green">// Custom marker icon for monitoring points</span>
+<span class="highlight-purple">var</span> <span class="highlight">monitoringIcon</span> = L.icon({
+    iconUrl: <span class="highlight-orange">'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png'</span>,
+    shadowUrl: <span class="highlight-orange">'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png'</span>,
+    iconSize: [<span class="highlight">25</span>, <span class="highlight">41</span>],
+    iconAnchor: [<span class="highlight">12</span>, <span class="highlight">41</span>],
+    popupAnchor: [<span class="highlight">1</span>, <span class="highlight">-34</span>],
+    shadowSize: [<span class="highlight">41</span>, <span class="highlight">41</span>]
+});
+
+<span class="highlight-green">// Add monitoring points to the map</span>
+monitoringPoints.forEach(<span class="highlight-purple">function</span>(point) {
+    <span class="highlight-purple">var</span> <span class="highlight">marker</span> = L.marker([point.lat, point.lng], {icon: monitoringIcon})
+        .bindPopup(<span class="highlight-orange">`
+            &lt;div style="text-align:center">&lt;strong>${point.name}&lt;/strong>&lt;/div>
+            &lt;div>&lt;strong>Station ID:&lt;/strong> ${point.id}&lt;/div>
+            &lt;div>&lt;strong>Description:&lt;/strong> ${point.description}&lt;/div>
+            &lt;div>&lt;small>Click for forecast information&lt;/small>&lt;/div>
+        `</span>)
+        .on(<span class="highlight-orange">'click'</span>, <span class="highlight-purple">function</span>() {
+            document.getElementById(<span class="highlight-orange">'river-select'</span>).value = point.id;
+            <span class="highlight-green">// Update selected river when marker is clicked</span>
+        });
+
+    marker.addTo(map);
+});</code>
+            </div>
+
+            <h3>4. Legend Implementation</h3>
+            <p>A custom legend is added to the map to explain the symbology:</p>
+
+            <div class="code-container">
+                <code><span class="highlight-green">// Add legend</span>
+<span class="highlight-purple">var</span> <span class="highlight">legend</span> = L.control({position: <span class="highlight-orange">'bottomright'</span>});
+legend.onAdd = <span class="highlight-purple">function</span>(map) {
+    <span class="highlight-purple">var</span> <span class="highlight">div</span> = L.DomUtil.create(<span class="highlight-orange">'div'</span>, <span class="highlight-orange">'legend'</span>);
+    div.innerHTML += <span class="highlight-orange">'&lt;div class="legend-item">&lt;div class="legend-color" style="background: #8B3A3A">&lt;/div>&lt;span class="legend-label">Mississippi Watershed&lt;/span>&lt;/div>'</span>;
+    div.innerHTML += <span class="highlight-orange">'&lt;div class="legend-item">&lt;div class="legend-color" style="background: #9932CC">&lt;/div>&lt;span class="legend-label">Rivers&lt;/span>&lt;/div>'</span>;
+    div.innerHTML += <span class="highlight-orange">'&lt;div class="legend-item">&lt;div style="background-image: url(https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png); background-size: contain; background-repeat: no-repeat; width: 20px; height: 20px;">&lt;/div>&lt;span class="legend-label">Monitoring Station&lt;/span>&lt;/div>'</span>;
+    <span class="highlight-purple">return</span> div;
+};
+legend.addTo(map);</code>
+            </div>
+        </section>
+
+        <section id="api-section" class="section">
+            <h2>API Integration & Web Services</h2>
+            <p>The application integrates with the NOAA National Water Model API to fetch real-time hydrological data. This section explains how the API calls are implemented and how the data is processed.</p>
+
+            <h3>1. API Configuration</h3>
+            <p>The API endpoint and key are configured for making authenticated requests:</p>
+
+            <div class="code-container">
+                <code><span class="highlight-green">// API configuration</span>
+<span class="highlight-purple">const</span> <span class="highlight">API_URL</span> = <span class="highlight-orange">'https://nwm-api-updt-9f6idmxh.uc.gateway.dev/'</span>;
+<span class="highlight-purple">const</span> <span class="highlight">API_KEY</span> = <span class="highlight-orange">'AIzaSyArCbLaEevrqrVPJDzu2OioM_kNmCBtsx8'</span>;</code>
+            </div>
+
+            <h3>2. Fetch River Data</h3>
+            <p>The application uses the Fetch API to make asynchronous calls to the NOAA API:</p>
+
+            <div class="code-container">
+                <code><span class="highlight-purple">async function</span> <span class="highlight-yellow">getForecast</span>() {
+    <span class="highlight-purple">const</span> <span class="highlight">selectedRiver</span> = document.getElementById(<span class="highlight-orange">'river-select'</span>).value;
+    <span class="highlight-purple">const</span> <span class="highlight">selectedRange</span> = document.getElementById(<span class="highlight-orange">'forecast-range'</span>).value;
+    <span class="highlight-purple">const</span> <span class="highlight">dataType</span> = document.getElementById(<span class="highlight-orange">'data-type'</span>).value;
+
+    <span class="highlight-green">// Show loading indicator</span>
+    document.querySelector(<span class="highlight-orange">'.loading'</span>).style.display = <span class="highlight-orange">'block'</span>;
+
+    <span class="highlight-green">// Get the COM ID for the selected river</span>
+    <span class="highlight-purple">const</span> <span class="highlight">comId</span> = monitoringPoints.find(point => point.id === selectedRiver)?.comId;
+
+    <span class="highlight-purple">try</span> {
+        <span class="highlight-purple">if</span> (dataType === <span class="highlight-orange">'percentile'</span>) {
+            <span class="highlight-green">// For real API call - for percentiles</span>
+            <span class="highlight-purple">const</span> <span class="highlight">endpoint</span> = <span class="highlight-orange">`${API_URL}return-period`</span>;
+            <span class="highlight-purple">const</span> <span class="highlight">params</span> = <span class="highlight-purple">new</span> URLSearchParams({
+                comids: comId,
+                output_format: <span class="highlight-orange">'json'</span>,
+                order_by_comid: <span class="highlight">false</span>
+            });
+
+            <span class="highlight-purple">const</span> <span class="highlight">response</span> = <span class="highlight-purple">await</span> fetch(<span class="highlight-orange">`${endpoint}?${params.toString()}`</span>, {
+                method: <span class="highlight-orange">'GET'</span>,
+                headers: {
+                    <span class="highlight-orange">'x-api-key'</span>: API_KEY
+                }
+            });
+
+            <span class="highlight-purple">if</span> (!response.ok) {
+                <span class="highlight-purple">throw new</span> Error(<span class="highlight-orange">`API error: ${response.status}`</span>);
+            }
+
+            <span class="highlight-purple">const</span> <span class="highlight">data</span> = <span class="highlight-purple">await</span> response.json();
+            processReturnPeriodData(data, selectedRange);
+        } <span class="highlight-purple">else</span> {
+            <span class="highlight-green">// For regular flow data</span>
+            <span class="highlight-purple">const</span> <span class="highlight">flowData</span> = generateFlowData(selectedRiver, selectedRange);
+            updateForecastChart(flowData, selectedRange, <span class="highlight-orange">'flow'</span>);
+        }
+
+        updateForecastDescription(selectedRiver, selectedRange, dataType);
+
+    } <span class="highlight-purple">catch</span> (error) {
+        console.error(<span class="highlight-orange">'Error fetching forecast:'</span>, error);
+
+        <span class="highlight-green">// Fall back to sample data for demo purposes</span>
+        <span class="highlight-purple">if</span> (dataType === <span class="highlight-orange">'percentile'</span>) {
+            <span class="highlight-purple">const</span> <span class="highlight">mockData</span> = generateMockForecastData(selectedRange);
+            updateForecastChart(mockData, selectedRange, <span class="highlight-orange">'percentile'</span>);
+        } <span class="highlight-purple">else</span> {
+            <span class="highlight-purple">const</span> <span class="highlight">flowData</span> = generateFlowData(selectedRiver, selectedRange);
+            updateForecastChart(flowData, selectedRange, <span class="highlight-orange">'flow'</span>);
+        }
+    } <span class="highlight-purple">finally</span> {
+        <span class="highlight-green">// Hide loading indicator</span>
+        document.querySelector(<span class="highlight-orange">'.loading'</span>).style.display = <span class="highlight-orange">'none'</span>;
+    }
+}</code>
+            </div>
+
+            <h3>3. Processing API Responses</h3>
+            <p>The returned JSON data is processed and transformed for use in the Chart.js visualization:</p>
+
+            <div class="code-container">
+                <code><span class="highlight-green">// Process return period data from API</span>
+<span class="highlight-purple">function</span> <span class="highlight-yellow">processReturnPeriodData</span>(data, forecastRange) {
+    <span class="highlight-green">// Example structure of the response data:</span>
+    <span class="highlight-green">// {
+    //   "comid": "18438969",
+    //   "return_periods": [
+    //     { "date": "2025-02-25", "rp_2": 12500, "rp_5": 18000, "rp_10": 21000, ... },
+    //     ...
+    //   ]
+    // }</span>
+
+    <span class="highlight-purple">const</span> <span class="highlight">returnPeriods</span> = data.return_periods || [];
+
+    <span class="highlight-green">// Convert to percentile format required by the chart</span>
+    <span class="highlight-purple">const</span> <span class="highlight">chartData</span> = returnPeriods.map(<span class="highlight">period</span> => {
+        <span class="highlight-green">// Calculate percentile based on return periods</span>
+        <span class="highlight-purple">let</span> <span class="highlight">percentile</span> = calculatePercentileFromReturnPeriod(period);
+
+        <span class="highlight-purple">return</span> {
+            validTime: period.date,
+            percentile: percentile
+        };
+    });
+
+    updateForecastChart(chartData, forecastRange, <span class="highlight-orange">'percentile'</span>);
+}
+
+<span class="highlight-green">// Simulate percentile calculation from return period values</span>
+<span class="highlight-purple">function</span> <span class="highlight-yellow">calculatePercentileFromReturnPeriod</span>(period) {
+    <span class="highlight-green">// This would be implemented based on hydrological formulas</span>
+    <span class="highlight-green">// For now, we're using a simplified approach</span>
+
+    <span class="highlight-purple">const</span> <span class="highlight">currentFlow</span> = period.flow || period.rp_2; <span class="highlight-green">// Use available value</span>
+    <span class="highlight-purple">const</span> <span class="highlight">rp2</span> = period.rp_2; <span class="highlight-green">// 50th percentile</span>
+    <span class="highlight-purple">const</span> <span class="highlight">rp100</span> = period.rp_100; <span class="highlight-green">// 99th percentile</span>
+
+    <span class="highlight-purple">if</span> (currentFlow <= rp2) {
+        <span class="highlight-purple">return</span> Math.round((currentFlow / rp2) * 50);
+    } <span class="highlight-purple">else</span> {
+        <span class="highlight-purple">const</span> <span class="highlight">excess</span> = currentFlow - rp2;
+        <span class="highlight-purple">const</span> <span class="highlight">range</span> = rp100 - rp2;
+        <span class="highlight-purple">return</span> Math.round(50 + (excess / range) * 49);
+    }
+}</code>
+            </div>
+
+            <h3>4. Data Visualization with Chart.js</h3>
+            <p>Chart.js is used to create interactive visualizations of the river flow data:</p>
+
+            <div class="code-container">
+                <code><span class="highlight-green">// Initialize forecast chart</span>
+<span class="highlight-purple">function</span> <span class="highlight-yellow">initializeChart</span>() {
+    <span class="highlight-purple">var</span> <span class="highlight">ctx</span> = document.getElementById(<span class="highlight-orange">'forecastChart'</span>).getContext(<span class="highlight-orange">'2d'</span>);
+    forecastChart = <span class="highlight-purple">new</span> Chart(ctx, {
+        type: <span class="highlight-orange">'line'</span>,
+        data: {
+            labels: [],
+            datasets: [{
+                label: <span class="highlight-orange">'Flow Percentile'</span>,
+                data: [],
+                borderColor: <span class="highlight-orange">'#9932CC'</span>,
+                backgroundColor: <span class="highlight-orange">'rgba(153, 50, 204, 0.1)'</span>,
+                borderWidth: <span class="highlight">2</span>,
+                tension: <span class="highlight">0.3</span>,
+                fill: <span class="highlight">true</span>
+            }]
+        },
+        options: {
+            responsive: <span class="highlight">true</span>,
+            maintainAspectRatio: <span class="highlight">false</span>,
+            plugins: {
+                legend: {
+                    position: <span class="highlight-orange">'top'</span>,
+                },
+                title: {
+                    display: <span class="highlight">true</span>,
+                    text: <span class="highlight-orange">'River Flow Forecast'</span>
+                },
+                tooltip: {
+                    callbacks: {
+                        label: <span class="highlight-purple">function</span>(context) {
+                            <span class="highlight-purple">return</span> <span class="highlight-orange">`${context.parsed.y}% percentile`</span>;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    min: <span class="highlight">0</span>,
+                    max: <span class="highlight">100</span>,
+                    title: {
+                        display: <span class="highlight">true</span>,
+                        text: <span class="highlight-orange">'Percentile (%)'</span>
+                    }
+                },
+                x: {
+                    title: {
+                        display: <span class="highlight">true</span>,
+                        text: <span class="highlight-orange">'Date'</span>
+                    }
+                }
+            }
+        }
+    });
+}</code>
+            </div>
+        </section>
+
+
+
+        <footer>
+            <p>Created for CE 514: Geospatial Software Development | RDR2 Frontier Waterways Project</p>
+            <p>Not affiliated with Rockstar Games | NOAA data used for educational purposes</p>
+        </footer>
+    </div>
 </body>
 </html>
